@@ -1,8 +1,6 @@
-//file: app/api/holdings/route.ts
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  // This is our mock data from the provided holdings-api-response.txt
   const holdings = [
     {
       coin: "USDC",
