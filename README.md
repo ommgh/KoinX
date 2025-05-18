@@ -4,6 +4,7 @@ This project is a frontend assignment for KoinX that simulates a **Tax Loss Harv
 
 ## Project Structure
 
+```
 app/
 ├── api/
 │ ├── capital-gains/
@@ -29,6 +30,7 @@ lib/
 public/
 store/
 └── use-holdings-store.ts
+```
 
 ## Tech Stack
 
