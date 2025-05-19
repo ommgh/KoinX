@@ -2,7 +2,7 @@
 
 import { useHoldingsStore } from "@/store/use-holdings-store";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sparkles } from "lucide-react";
+import { PartyPopper } from "lucide-react";
 
 export function CapitalGainsSection() {
   const { capitalGains, afterHarvestingCapitalGains } = useHoldingsStore();
@@ -187,7 +187,7 @@ export function CapitalGainsSection() {
             </div>
             {showSavings && (
               <div className="pt-4 flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-yellow-300" />
+                <PartyPopper className="h-5 w-5 text-yellow-300" />
                 <span>
                   You are going to save upto ${" "}
                   {savings.toLocaleString("en-US", {

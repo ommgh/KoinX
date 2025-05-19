@@ -29,9 +29,12 @@ export function Header() {
         <div className="flex items-center">
           <Button variant="outline" size="icon" onClick={toggleTheme}>
             {theme === "dark" ? (
-              <Sun className="h-[1.2rem] w-[1.2rem]" />
+              <Sun className="h-[1.2rem] w-[1.2rem]" suppressHydrationWarning />
             ) : (
-              <Moon className="h-[1.2rem] w-[1.2rem]" />
+              <Moon
+                className="h-[1.2rem] w-[1.2rem]"
+                suppressHydrationWarning
+              />
             )}
             <span className="sr-only">Toggle theme</span>
           </Button>

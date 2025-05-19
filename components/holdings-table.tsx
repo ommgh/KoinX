@@ -15,10 +15,25 @@ import {
   createColumnHelper,
   type SortingState,
   type Row,
+  type Column,
 } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, ArrowDown, ArrowUp } from "lucide-react";
 
 const columnHelper = createColumnHelper<Holding>();
+
+const SortIcon = ({ column }: { column: Column<Holding, unknown> }) => {
+  if (!column.getCanSort()) {
+    return null;
+  }
+  const sorted = column.getIsSorted();
+  if (sorted === "asc") {
+    return <ArrowUp className="h-3 w-3" />;
+  }
+  if (sorted === "desc") {
+    return <ArrowDown className="h-3 w-3" />;
+  }
+  return <ArrowUpDown className="h-3 w-3 text-gray-400" />;
+};
 
 export function HoldingsTable() {
   const {
@@ -79,16 +94,7 @@ export function HoldingsTable() {
         enableSorting: false,
       }),
       columnHelper.accessor("coinName", {
-        header: ({ column }) => (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="flex items-center gap-1 p-0 hover:bg-transparent font-semibold"
-          >
-            Asset
-            <ArrowUpDown className="h-3 w-3" />
-          </Button>
-        ),
+        header: "Asset",
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
             <Image
@@ -110,21 +116,12 @@ export function HoldingsTable() {
             </div>
           </div>
         ),
-        sortingFn: "text",
+        enableSorting: false,
       }),
       columnHelper.accessor("totalHolding", {
-        header: ({ column }) => (
+        header: () => (
           <div className="text-right">
-            <Button
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === "asc")
-              }
-              className="flex items-center gap-1 p-0 hover:bg-transparent font-semibold ml-auto"
-            >
-              Holdings
-              <ArrowUpDown className="h-3 w-3" />
-            </Button>
+            <div>Holdings</div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
               Current Market Rate
             </div>
@@ -145,24 +142,11 @@ export function HoldingsTable() {
             </div>
           </div>
         ),
-        sortingFn: "alphanumeric",
+        enableSorting: false,
       }),
       columnHelper.accessor((row) => row.totalHolding * row.currentPrice, {
         id: "totalValue",
-        header: ({ column }) => (
-          <div className="text-right">
-            <Button
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === "asc")
-              }
-              className="flex items-center gap-1 p-0 hover:bg-transparent font-semibold ml-auto"
-            >
-              Total Current Value
-              <ArrowUpDown className="h-3 w-3" />
-            </Button>
-          </div>
-        ),
+        header: () => <div className="text-right">Total Current Value</div>,
         cell: ({ getValue }) => (
           <div className="text-right font-medium">
             ${" "}
@@ -172,7 +156,7 @@ export function HoldingsTable() {
             })}
           </div>
         ),
-        sortingFn: "alphanumeric",
+        enableSorting: false,
       }),
       columnHelper.accessor((row) => row.stcg.gain, {
         id: "shortTerm",
@@ -186,7 +170,7 @@ export function HoldingsTable() {
               className="flex items-center gap-1 p-0 hover:bg-transparent font-semibold ml-auto"
             >
               Short-term P/L
-              <ArrowUpDown className="h-3 w-3" />
+              <SortIcon column={column} />
             </Button>
           </div>
         ),
@@ -210,6 +194,7 @@ export function HoldingsTable() {
             </div>
           );
         },
+        enableSorting: true,
         sortingFn: "alphanumeric",
       }),
       columnHelper.accessor((row) => row.ltcg.gain, {
@@ -224,7 +209,7 @@ export function HoldingsTable() {
               className="flex items-center gap-1 p-0 hover:bg-transparent font-semibold ml-auto"
             >
               Long-Term P/L
-              <ArrowUpDown className="h-3 w-3" />
+              <SortIcon column={column} />
             </Button>
           </div>
         ),
@@ -248,6 +233,7 @@ export function HoldingsTable() {
             </div>
           );
         },
+        enableSorting: true,
         sortingFn: "alphanumeric",
       }),
       columnHelper.display({
@@ -257,7 +243,7 @@ export function HoldingsTable() {
         ),
         cell: ({ row }) => (
           <div className="text-right">
-            {row.getIsSelected() ? ( // Check if the row is selected
+            {row.getIsSelected() ? (
               <div>
                 {row.original.totalHolding.toFixed(6)} {row.original.coin}
               </div>
@@ -266,6 +252,7 @@ export function HoldingsTable() {
             )}
           </div>
         ),
+        enableSorting: false,
       }),
     ],
     [
@@ -302,7 +289,7 @@ export function HoldingsTable() {
 
   const rowsToDisplay = useMemo(() => {
     const processedRows = table.getRowModel().rows;
-    return showAll ? processedRows : processedRows.slice(0, 5);
+    return showAll ? processedRows : processedRows.slice(0, 4);
   }, [showAll, table.getRowModel().rows]);
 
   return (
@@ -313,7 +300,6 @@ export function HoldingsTable() {
       <CardContent className="p-0">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
-            {" "}
             <thead className="bg-gray-50 dark:bg-gray-800/50">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -377,7 +363,9 @@ export function HoldingsTable() {
               onClick={() => setShowAll(!showAll)}
               className="text-blue-600 hover:text-blue-700 hover:underline"
             >
-              {showAll ? "Show Less" : `View all ${holdings.length} holdings`}
+              {showAll
+                ? "Show Less (Top 5)"
+                : `View all ${holdings.length} holdings`}
             </Button>
           </div>
         )}

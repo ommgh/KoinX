@@ -102,14 +102,27 @@ export function TaxHarvestingDashboard() {
             align="start"
             className="rounded-md bg-[#0c1c40] dark:bg-white text-white dark:text-black shadow-md px-4 py-2 max-w-xs text-sm border border-gray-200"
           >
-            <p>
-              Lorem ipsum dolor sit amet consectetur. Euismod id posuere nibh
-              semper mattis scelerisque tellus. Vel mattis diam duis morbi
-              tellus dui consectetur.{" "}
+            <ul className=" list-disc">
+              <li>See your capital gians for PY 2024-25 in the left card</li>
+              <li>
+                Check boxes for assets you plan on selling to reduce your tax
+                liability
+              </li>
+              <li>
+                Instantly see your updated tax liability in the right card
+              </li>
+              <div className="mt-2">
+                <div>
+                  <span className="font-bold">Pro tip: </span>
+                  {""}
+                  Experiment with different combinations of your holdings to
+                  optimize your tax liability
+                </div>
+              </div>
               <span className="text-blue-600 underline cursor-pointer hover:text-blue-800">
                 Know More
               </span>
-            </p>
+            </ul>
           </PopoverContent>
         </Popover>
       </div>

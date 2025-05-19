@@ -107,7 +107,7 @@ export async function GET() {
       averageBuyPrice: 55000,
       stcg: {
         balance: 0.338,
-        gain: -1200,
+        gain: -20000,
       },
       ltcg: {
         balance: 0.3,
